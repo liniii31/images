@@ -40,6 +40,7 @@ def image_callback(msg):
 		img = bridge.imgmsg_to_cv2(msg, "bgr8")
 	except CvBridgeError:
 		print("ERROR!!")
+	image_pub = rospy.Publisher("/input_image",Image)
 	grayed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	img = cv2.threshold(grayed, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 	#img = cv2.bitwise_not(img)
@@ -51,6 +52,7 @@ def image_callback(msg):
 	img = np.expand_dims(img, 0)
 	data = torch.tensor(img)
 	data = data.float()
+	image_pub.publish(bridge.cv2_to_imgmsg(img, encoding="passthrough"))
 	global model
 	pred = model(data)
 	print("---------------------------------------------------------------------------------------------------------")
