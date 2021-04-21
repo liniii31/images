@@ -66,8 +66,7 @@ def image_callback(msg):
 
 def ip():
 	global model
-	path = F"/home/shalini/google-drive/mnsit_model.pt"
-	model.load_state_dict(torch.load(path))
+	model.load_state_dict(torch.load("/home/shalini/catkin_ws/src/images/nodes/mnsit_model.pt"))
 	# Set up your subscriber
 	image_topic = "/image_raw"
 	rospy.Subscriber(image_topic, Image, image_callback)
